@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=@PREFIX@
+exec_prefix=@EXEC_PREFIX@
+libdir=@LIBDIR@
+includedir=@INCLUDEDIR@
+
+Name: oauth2
+Description: Tizen oauth 2.0 Framework
+Version: @VERSION@
+#Requires: capi-base-common
+Libs: -L${libdir} -loauth2
+Cflags: -I${includedir}
