@@ -22,8 +22,12 @@
 #include <bundle.h>
 #include <curl/curl.h>
 
-//#include <EWebKit.h>
+#ifdef WITH_CHROMIUM		
+#include <ewk_chromium.h>		
+#else		
+#include <EWebKit.h>
 #include <ewk_view.h>
+#endif
 
 #include <json-glib/json-glib.h>
 #include "oauth2_manager.h"

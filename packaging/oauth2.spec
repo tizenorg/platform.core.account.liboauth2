@@ -12,8 +12,12 @@ BuildRequires:  pkgconfig(bundle)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(efl-extension)
-#BuildRequires:  pkgconfig(ewebkit2)
-BuildRequires:  pkgconfig(chromium-efl)
+%if "%{?tizen_version}" == "3.0"
+BuildRequires: pkgconfig(chromium-efl)
+%else
+BuildRequires: pkgconfig(ewebkit2)
+%endif
+
 BuildRequires:  pkgconfig(json-glib-1.0)
 BuildRequires:  pkgconfig(elementary)
 
@@ -42,20 +46,28 @@ export FFLAGS="$FFLAGS -DTIZEN_DEBUG_ENABLE"
 
 export CFLAGS="${CFLAGS} -fPIC -fvisibility=hidden"
 
+%if "%{?tizen_version}" == "3.0"
+_CHROMIUM_EFL="YES"
+%else
+_CHROMIUM_EFL="NO"
+%endif
+
 %if "%{?tizen_profile_name}" == "wearable"
 cmake . \
--DCMAKE_INSTALL_PREFIX=/usr \
--DINCLUDEDIR=%{_includedir} \
+-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 -DLIBDIR=%{_libdir} \
--DEXCLUDE_EWK_ERR="YES"
+-DINCLUDEDIR=%{_includedir} \
+-DEXCLUDE_EWK_ERR="YES" \
+-DUSE_CHROMIUM_EFL:BOOL=${_CHROMIUM_EFL}
 
 %else
 cmake . \
--DCMAKE_INSTALL_PREFIX=/usr \
--DINCLUDEDIR=%{_includedir} \
+-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 -DLIBDIR=%{_libdir} \
-
+-DINCLUDEDIR=%{_includedir} \
+-DUSE_CHROMIUM_EFL:BOOL=${_CHROMIUM_EFL}
 %endif
+
 
 make %{?jobs:-j%jobs}
 
@@ -63,7 +75,9 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 
-rm -rf %{buildroot}/usr/lib/oauth2
+mkdir -p %{buildroot}%{_libdir}
+
+rm -rf %{buildroot}%{_libdir}/oauth2
 
 %postun -p /sbin/ldconfig
 

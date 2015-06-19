@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(oauth2 C)
 
 SET(PREFIX ${CMAKE_INSTALL_PREFIX})
-SET(EXEC_PREFIX "\${prefix}")
+##SET(EXEC_PREFIX "\${prefix}")
 #SET(LIBDIR "\${prefix}/lib")
 #SET(INCLUDEDIR "\${prefix}/include ")
 SET(VERSION_MAJOR 0)

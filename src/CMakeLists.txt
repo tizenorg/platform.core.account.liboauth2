@@ -17,12 +17,18 @@ SET(SRCS
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
 
+INCLUDE(FindPkgConfig)
 if(DEFINED EXCLUDE_EWK_ERR)
     add_definitions(-DWITHOUT_EWK_ERROR)
 endif()
 
-INCLUDE(FindPkgConfig)
-pkg_check_modules(clientpkgs REQUIRED dlog capi-base-common libcurl efl-extension ecore evas chromium-efl json-glib-1.0 elementary)
+if(DEFINED USE_CHROMIUM_EFL)
+	add_definitions(-DWITH_CHROMIUM)
+	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas chromium-efl json-glib-1.0 elementary)
+else()
+	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas ewebkit2 json-glib-1.0 elementary)
+endif()
+
 FOREACH(flag ${clientpkgs_CFLAGS})
 	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
@@ -41,11 +47,15 @@ SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES VERSION ${VERSION})
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${clientpkgs_LDFLAGS})
 
+CONFIGURE_FILE(${PROJECT_NAME}.pc.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
+
 #INSTALL(TARGETS ${PROJECT_NAME} DESTINATION lib)
-INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${LIBDIR})
-CONFIGURE_FILE(oauth2.pc.in ../oauth2.pc @ONLY)
+#CONFIGURE_FILE(oauth2.pc.in ../oauth2.pc @ONLY)
 #INSTALL(FILES ${CMAKE_BINARY_DIR}/oauth2.pc DESTINATION lib/pkgconfig)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/oauth2.pc DESTINATION ${LIBDIR}/pkgconfig)
+
+INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${LIBDIR}/oauth2)
+INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${LIBDIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${LIBDIR}/pkgconfig)
 
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/include/oauth2.h DESTINATION include)
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/include/oauth2_manager.h DESTINATION include)
