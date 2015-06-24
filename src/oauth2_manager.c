@@ -349,7 +349,7 @@ __store_curl_response(void *ptr, size_t size, size_t nmemb, void *data)
 		*result = calloc(size * nmemb + 1, sizeof(char));
 		OAUTH2_RETURN_VAL(*result, {}, OAUTH2_ERROR_OUT_OF_MEMORY,
 			"Out of memory");
-		memcpy(*result, ptr, size * nmemb); 
+		memcpy(*result, ptr, size * nmemb);
 	} else {
 		size_t len = strlen(*result);
 		*result = realloc(*result, len + size * nmemb + 1);
@@ -414,7 +414,7 @@ __parse_acc_token_response(const char *response_json,
 
 		/*
 		 * Some svc providers (example: GitHub) do not send json
-		 * response, which violates 
+		 * response, which violates
 		 * http://tools.ietf.org/html/rfc6749#section-4.1.4 and
 		 * http://tools.ietf.org/html/rfc6749#section-5.1
 		 */
@@ -875,7 +875,7 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 			sizeof(oauth2_response_s));
 
 		/* Check if its error response or success resopnse */
-		/* 
+		/*
 		 * FB sample error: YOUR_REDIRECT_URI?error_reason=user_denied&
 		 * error=access_denied&
 		 * error_description=The+user+denied+your+request.
@@ -980,7 +980,7 @@ __start_auth_grant_request(oauth2_manager_s *mgr_handle)
 	elm_object_text_set(mgr_handle->loading_popup, OAUTH2_LOADING_POP_UP_TEXT);
 	elm_popup_orient_set(mgr_handle->loading_popup, ELM_POPUP_ORIENT_BOTTOM);
 
-//	ewk_init();
+    /* ewk_init(); */
 
 	Evas *canvas = NULL;
 
@@ -1104,9 +1104,9 @@ oauth2_manager_request_token(oauth2_manager_h handle, oauth2_request_h request,
 	 * is mentioned
 	 */
 	else {
-		/* 
+		/*
 		 * Here authorization grant handling is out of oauth 2.0 RFC, so
-		 * unless a custom auth grant handler is set, we will proceed 
+		 * unless a custom auth grant handler is set, we will proceed
 		 * with access token request directly
 		 */
 		if (!strcmp(grant_type,
@@ -1211,8 +1211,8 @@ oauth2_manager_request_authorization_grant(oauth2_manager_h handle,
 		|| !strcmp(grant_type,
 		OAUTH2_PARAMETER_VAL_GRANT_TYPE_CLIENT_CREDENTIALS)) {
 		/*
-		 * No additional grant request needed as per RFC 
-		 * (http://tools.ietf.org/html/rfc6749#section-4.3.1 and 
+		 * No additional grant request needed as per RFC
+		 * (http://tools.ietf.org/html/rfc6749#section-4.3.1 and
 		 * http://tools.ietf.org/html/rfc6749#section-4.4.1)
 		 */
 		return OAUTH2_ERROR_INVALID_PARAMETER;
@@ -1220,7 +1220,7 @@ oauth2_manager_request_authorization_grant(oauth2_manager_h handle,
 
 	/* TODO: TBD, extension grant_type / response_type support */
 	return OAUTH2_ERROR_NOT_SUPPORTED;
-	/*LCOV_EXCL_STOP*/ 
+	/*LCOV_EXCL_STOP*/
 }
 
 OAUTH2_API int
@@ -1286,7 +1286,7 @@ oauth2_manager_request_access_token(oauth2_manager_h handle,
 		 * is mentioned
 		 */
 
-		/* 
+		/*
 		 * Here authorization grant handling is out of oauth 2.0 RFC, so
 		 * unless a custom auth grant handler is set, we will proceed
 		 * with access token request directly
@@ -1318,7 +1318,7 @@ oauth2_manager_request_access_token(oauth2_manager_h handle,
 	}
 
 	return OAUTH2_ERROR_NOT_SUPPORTED;
-	/*LCOV_EXCL_STOP*/ 
+	/*LCOV_EXCL_STOP*/
 }
 
 /*LCOV_EXCL_START*/
@@ -1377,7 +1377,7 @@ _request_refresh_token(oauth2_manager_s *mgr_impl)
 	}
 	OAUTH2_FREE(post_body);
 }
-/*LCOV_EXCL_STOP*/ 
+/*LCOV_EXCL_STOP*/
 
 OAUTH2_API int
 oauth2_manager_refresh_access_token(oauth2_manager_h handle,
@@ -1437,7 +1437,7 @@ oauth2_manager_refresh_access_token(oauth2_manager_h handle,
 	_request_refresh_token(mgr_impl);
 
 	return OAUTH2_ERROR_NONE;
-	/*LCOV_EXCL_STOP*/ 
+	/*LCOV_EXCL_STOP*/
 }
 
 OAUTH2_API bool
@@ -1447,7 +1447,7 @@ oauth2_manager_is_request_in_progress(oauth2_manager_h handle)
 
 	/*LCOV_EXCL_START*/
 	return ((oauth2_manager_s *)handle)->is_active;
-	/*LCOV_EXCL_STOP*/ 
+	/*LCOV_EXCL_STOP*/
 }
 
 OAUTH2_API int

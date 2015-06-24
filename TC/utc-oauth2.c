@@ -1,12 +1,10 @@
 #include "assert.h"
 #include <oauth2.h>
 #include <string.h>
-#include <glib-2.0/glib.h>
-#include <dlog.h>
 
-#define OAUTH2_FREE(ptr)	\
-		if (ptr != NULL) {	\
-			free(ptr);	\
+#define OAUTH2_FREE(ptr) \
+		if (ptr != NULL) { \
+			free(ptr); \
 			ptr = NULL; \
 		}
 
@@ -14,30 +12,18 @@ static bool manager_created = false;
 static bool request_created = false;
 static oauth2_manager_h manager = NULL;
 static oauth2_request_h request = NULL;
-static GMainLoop* mainloop = NULL;
 static int _is_fail = true;
-
-static gboolean timeout_cb(gpointer data) {
-	printf("timeout!\n");
-	_is_fail = true;
-	g_main_loop_quit((GMainLoop*)data);
-	return FALSE;
-}
 
 void utc_oauth2_startup(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
 	ret = oauth2_manager_create(&manager);
 	if (ret == OAUTH2_ERROR_NONE)
-	{
 		manager_created = true;
-	}
 
 	ret = oauth2_request_create(&request);
 	if (ret == OAUTH2_ERROR_NONE)
-	{
 		request_created = true;
-	}
 }
 
 void utc_oauth2_cleanup(void)
@@ -45,15 +31,15 @@ void utc_oauth2_cleanup(void)
 	int ret = OAUTH2_ERROR_NONE;
 	ret = oauth2_manager_destroy(manager);
 	if (ret == OAUTH2_ERROR_NONE)
-	{
 		manager_created = false;
-	}
+
+	manager = NULL;
 
 	ret = oauth2_request_destroy(request);
 	if (ret == OAUTH2_ERROR_NONE)
-	{
 		request_created = false;
-	}
+
+	request = NULL;
 }
 
 int utc_oauth2_manager_create_p(void)
@@ -74,24 +60,23 @@ int utc_oauth2_manager_create_n(void)
 
 int oauth2_manager_destroy_p(void)
 {
-	assert(manager_created);
-	utc_oauth2_cleanup();
+	oauth2_manager_h manager_local = NULL;
 
-	assert(!manager_created);
+	int ret = oauth2_manager_create(&manager_local);
+	assert_eq(ret, OAUTH2_ERROR_NONE);
 
-	utc_oauth2_startup();
+	ret = oauth2_manager_destroy(manager_local);
+	assert_eq(ret, OAUTH2_ERROR_NONE);
 
 	return 0;
 }
 
 int oauth2_manager_destroy_n(void)
 {
-	// TODO
-	/*
 	int ret = OAUTH2_ERROR_NONE;
 	ret = oauth2_manager_destroy(NULL);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
-	*/
+
 	return 0;
 }
 
@@ -140,21 +125,8 @@ int oauth2_manager_is_request_in_progress_n(void)
 	int ret = OAUTH2_ERROR_NONE;
 
 	ret = oauth2_manager_is_request_in_progress(NULL);
-	assert_eq(ret, FALSE);
+	assert_eq(ret, false);
 
-	return 0;
-}
-
-int oauth2_manager_clear_cookies_p(void)
-{
-	// TODO
-/*
-	assert(manager_created);
-	int ret = OAUTH2_ERROR_NONE;
-
-	ret = oauth2_manager_clear_cookies(manager);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -165,19 +137,6 @@ int oauth2_manager_clear_cookies_n(void)
 	ret = oauth2_manager_clear_cookies(NULL);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_manager_clear_cache_p(void)
-{
-	// TODO
-/*
-	assert(manager_created);
-	int ret = OAUTH2_ERROR_NONE;
-
-	ret = oauth2_manager_clear_cache(manager);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -226,12 +185,10 @@ int oauth2_request_destroy_p(void)
 
 int oauth2_request_destroy_n(void)
 {
-	// TODO
-	/*
 	int ret = OAUTH2_ERROR_NONE;
 	ret = oauth2_request_destroy(NULL);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
-	*/
+
 	return 0;
 }
 
@@ -576,7 +533,6 @@ int oauth2_request_set_password_n(void)
 
 int oauth2_request_add_custom_data_p(void)
 {
-	// TODO
 	assert(request);
 
 	int ret = OAUTH2_ERROR_NONE;
@@ -589,7 +545,6 @@ int oauth2_request_add_custom_data_p(void)
 
 int oauth2_request_add_custom_data_n(void)
 {
-	// TODO
 	assert(request);
 
 	int ret = OAUTH2_ERROR_NONE;
@@ -615,7 +570,6 @@ int oauth2_request_get_auth_end_point_url_p(void)
 
 	assert_eq(strcmp("www.example.com", url), 0);
 
-	OAUTH2_FREE(url);
 	return 0;
 }
 
@@ -647,7 +601,6 @@ int oauth2_request_get_token_end_point_url_p(void)
 
 	assert_eq(strcmp("www.example.com", url), 0);
 
-	OAUTH2_FREE(url);
 	return 0;
 }
 
@@ -679,7 +632,6 @@ int oauth2_request_get_redirection_url_p(void)
 
 	assert_eq(strcmp("www.example.com", url), 0);
 
-	OAUTH2_FREE(url);
 	return 0;
 }
 
@@ -711,7 +663,6 @@ int oauth2_request_get_refresh_token_url_p(void)
 
 	assert_eq(strcmp("www.example.com", url), 0);
 
-	OAUTH2_FREE(url);
 	return 0;
 }
 
@@ -743,7 +694,6 @@ int oauth2_request_get_refresh_token_p(void)
 
 	assert_eq(strcmp("refresh_token", token), 0);
 
-	OAUTH2_FREE(token);
 	return 0;
 }
 
@@ -807,7 +757,6 @@ int oauth2_request_get_client_id_p(void)
 
 	assert_eq(strcmp("client_id", id), 0);
 
-	OAUTH2_FREE(id);
 	return 0;
 }
 
@@ -839,7 +788,6 @@ int oauth2_request_get_client_secret_p(void)
 
 	assert_eq(strcmp("client_secret", secret), 0);
 
-	OAUTH2_FREE(secret);
 	return 0;
 }
 
@@ -871,7 +819,6 @@ int oauth2_request_get_scope_p(void)
 
 	assert_eq(strcmp("email", scope), 0);
 
-	OAUTH2_FREE(scope);
 	return 0;
 }
 
@@ -903,7 +850,6 @@ int oauth2_request_get_state_p(void)
 
 	assert_eq(strcmp("sample_state", state), 0);
 
-	OAUTH2_FREE(state);
 	return 0;
 }
 
@@ -967,7 +913,6 @@ int oauth2_request_get_authorization_code_p(void)
 
 	assert_eq(strcmp("auth_code", code), 0);
 
-	OAUTH2_FREE(code);
 	return 0;
 }
 
@@ -999,7 +944,6 @@ int oauth2_request_get_user_name_p(void)
 
 	assert_eq(strcmp("user_name", user_name), 0);
 
-	OAUTH2_FREE(user_name);
 	return 0;
 }
 
@@ -1031,7 +975,6 @@ int oauth2_request_get_password_p(void)
 
 	assert_eq(strcmp("password", password), 0);
 
-	OAUTH2_FREE(password);
 	return 0;
 }
 
@@ -1084,19 +1027,6 @@ int oauth2_request_get_custom_data_n(void)
  * response
  */
 
-int oauth2_response_destroy_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-
-	ret = oauth2_response_destroy(response);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
-	return 0;
-}
-
 int oauth2_response_destroy_n(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
@@ -1104,20 +1034,6 @@ int oauth2_response_destroy_n(void)
 	ret = oauth2_response_destroy(NULL);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_response_get_authorization_code_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *code = NULL;
-
-	ret = oauth2_response_get_authorization_code(response, &code);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -1132,20 +1048,6 @@ int oauth2_response_get_authorization_code_n(void)
 	return 0;
 }
 
-int oauth2_response_get_state_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *state = NULL;
-
-	ret = oauth2_response_get_state(response, &state);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
-	return 0;
-}
-
 int oauth2_response_get_state_n(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
@@ -1154,20 +1056,6 @@ int oauth2_response_get_state_n(void)
 	ret = oauth2_response_get_state(NULL, &state);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_response_get_access_token_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *token = NULL;
-
-	ret = oauth2_response_get_access_token(response, &token);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -1182,20 +1070,6 @@ int oauth2_response_get_access_token_n(void)
 	return 0;
 }
 
-int oauth2_response_get_token_type_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *type = NULL;
-
-	ret = oauth2_response_get_token_type(response, &type);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
-	return 0;
-}
-
 int oauth2_response_get_token_type_n(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
@@ -1204,20 +1078,6 @@ int oauth2_response_get_token_type_n(void)
 	ret = oauth2_response_get_token_type(NULL, &type);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_response_get_expires_in_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	long long expires_in = 0;
-
-	ret = oauth2_response_get_expires_in(response, &expires_in);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -1232,20 +1092,6 @@ int oauth2_response_get_expires_in_n(void)
 	return 0;
 }
 
-int oauth2_response_get_refresh_token_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *token = NULL;
-
-	ret = oauth2_response_get_refresh_token(response, &token);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
-	return 0;
-}
-
 int oauth2_response_get_refresh_token_n(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
@@ -1254,20 +1100,6 @@ int oauth2_response_get_refresh_token_n(void)
 	ret = oauth2_response_get_refresh_token(NULL, &token);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_response_get_scope_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	char *scope = NULL;
-
-	ret = oauth2_response_get_scope(response, &scope);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
 	return 0;
 }
 
@@ -1282,20 +1114,6 @@ int oauth2_response_get_scope_n(void)
 	return 0;
 }
 
-int oauth2_response_get_error_p(void)
-{
-	// TODO
-/*
-	int ret = OAUTH2_ERROR_NONE;
-	oauth2_response_h response = NULL;
-	oauth2_error_h err = NULL;
-
-	ret = oauth2_response_get_error(response, &err);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-*/
-	return 0;
-}
-
 int oauth2_response_get_error_n(void)
 {
 	int ret = OAUTH2_ERROR_NONE;
@@ -1304,23 +1122,6 @@ int oauth2_response_get_error_n(void)
 	ret = oauth2_response_get_error(NULL, &err);
 	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
 
-	return 0;
-}
-
-int oauth2_response_get_custom_data_p(void)
-{
-	// TODO
-/*
-	assert(request);
-
-	int ret = OAUTH2_ERROR_NONE;
-
-	char *val = NULL;
-	ret = oauth2_response_get_custom_data(request, "c_key", &val);
-	assert_eq(ret, OAUTH2_ERROR_NONE);
-
-	assert_eq(strcmp("c_val", val), 0);
-*/
 	return 0;
 }
 
@@ -1336,3 +1137,55 @@ int oauth2_response_get_custom_data_n(void)
 
 	return 0;
 }
+
+
+/*
+ * error
+ */
+
+int oauth2_error_get_code_n(void)
+{
+	int ret = OAUTH2_ERROR_NONE;
+
+	int val1 = 0;
+	int val2 = 0;
+
+	ret = oauth2_error_get_code(NULL, &val1, &val2);
+	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
+
+	return 0;
+}
+
+int oauth2_error_get_description_n(void)
+{
+	int ret = OAUTH2_ERROR_NONE;
+	char *description = NULL;
+
+	ret = oauth2_error_get_description(NULL, &description);
+	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
+
+	return 0;
+}
+
+int oauth2_error_get_uri_n(void)
+{
+	int ret = OAUTH2_ERROR_NONE;
+	char *uri = NULL;
+
+	ret = oauth2_error_get_uri(NULL, &uri);
+	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
+
+	return 0;
+}
+
+int oauth2_error_get_custom_data_n(void)
+{
+	int ret = OAUTH2_ERROR_NONE;
+
+	char *val = NULL;
+	ret = oauth2_error_get_custom_data(NULL, "key", &val);
+	assert_eq(ret, OAUTH2_ERROR_INVALID_PARAMETER);
+
+	return 0;
+}
+

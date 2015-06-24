@@ -23,7 +23,7 @@
 int
 _oauth2_response_create(oauth2_response_s **response)
 {
-	oauth2_response_s *response_temp = 
+	oauth2_response_s *response_temp =
 		(oauth2_response_s *)calloc(1, sizeof(oauth2_response_s));
 	OAUTH2_RETURN_VAL(response_temp, {}, OAUTH2_ERROR_OUT_OF_MEMORY,
 			"Out of memory");

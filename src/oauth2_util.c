@@ -95,8 +95,7 @@ oauth2_util_get_params(const char *url_part, bundle **params)
 
 	int idx = 0;
 	gchar **pch = g_strsplit_set(url, "&;", -1);
-	while (pch && pch[idx] && strlen(pch[idx]))
-	{
+	while (pch && pch[idx] && strlen(pch[idx])) {
 		char *tmp_start = pch[idx];
 		char *tmp_end = tmp_start;
 		while (*tmp_end != '\0')

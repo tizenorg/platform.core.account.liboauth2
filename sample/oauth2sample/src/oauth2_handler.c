@@ -172,7 +172,7 @@ create_button_view(Evas_Object *parent)
 		(void *)4);
 	evas_object_show(btn);
 	elm_box_pack_end(box, btn);
-	
+
 	/* btn_circle style */
 	btn = elm_button_add(box);
 	elm_object_style_set(btn, "circle");
@@ -325,7 +325,7 @@ refresh_token_response_cb(oauth2_response_h response, void *user_data)
 		oauth2_response_get_error(response, &e_handle);
 		char *error_val = NULL;
 		oauth2_error_get_custom_data(e_handle, "error", &error_val);
-		if (error_val) 
+		if (error_val)
 			strcpy(displayStr, error_val);
 		else {
 			int error_code = 0;
@@ -758,7 +758,7 @@ start_linkedin_oauth_code_cb(void *data, Evas_Object *obj, void *event_info)
 			request, grant_response_cb, request);
 
 	}
-} 
+}
 
 void
 start_salesforce_oauth_code_cb(void *data, Evas_Object *obj, void *event_info)

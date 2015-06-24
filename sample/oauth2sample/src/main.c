@@ -75,14 +75,14 @@ create_list_view(appdata_s *ad)
 	 * [Client Credential]
 	*/
 
-	/* 
+	/*
 	 * elm_list_item_append(list, "[Password] TODO", NULL, NULL, NULL, nf);
 	 */
 	/* Google uses Password authentication grant type. [Password] */
 
 	elm_list_item_append(list, "Google [Refresh Token]", NULL, NULL,
 		start_google_refresh_token_cb, nf);
-	/* 
+	/*
 	 * Gets Google Refresh Token authentication grant type.
 	 * [Refresh Token]
 	 */
