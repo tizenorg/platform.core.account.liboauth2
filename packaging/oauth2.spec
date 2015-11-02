@@ -10,12 +10,14 @@ BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(bundle)
 BuildRequires:  pkgconfig(capi-base-common)
+BuildRequires:  pkgconfig(capi-media-audio-io)
+BuildRequires:  pkgconfig(capi-media-camera)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(efl-extension)
 %if "%{?tizen_version}" == "3.0"
-BuildRequires: pkgconfig(chromium-efl)
+BuildRequires:  pkgconfig(chromium-efl)
 %else
-BuildRequires: pkgconfig(ewebkit2)
+BuildRequires:  pkgconfig(ewebkit2)
 %endif
 
 BuildRequires:  pkgconfig(json-glib-1.0)
