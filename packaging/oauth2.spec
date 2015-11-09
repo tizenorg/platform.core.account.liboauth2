@@ -1,3 +1,5 @@
+%bcond_with wayland
+
 Name:       oauth2
 Summary:    Tizen oauth 2.0 Framework
 Version:    0.0.1
@@ -12,7 +14,7 @@ BuildRequires:  pkgconfig(bundle)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(efl-extension)
-%if "%{?tizen_version}" == "3.0"
+%if "%{?tizen_version}" == "3.0" && %{with wayland}
 BuildRequires: pkgconfig(chromium-efl)
 %else
 BuildRequires: pkgconfig(ewebkit2)
@@ -46,7 +48,7 @@ export FFLAGS="$FFLAGS -DTIZEN_DEBUG_ENABLE"
 
 export CFLAGS="${CFLAGS} -fPIC -fvisibility=hidden"
 
-%if "%{?tizen_version}" == "3.0"
+%if "%{?tizen_version}" == "3.0" && %{with wayland}
 _CHROMIUM_EFL="YES"
 %else
 _CHROMIUM_EFL="NO"
