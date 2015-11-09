@@ -1,3 +1,4 @@
+%bcond_with x
 Name:       oauth2
 Summary:    Tizen oauth 2.0 Framework
 Version:    0.0.1
@@ -5,6 +6,10 @@ Release:    1
 Group:      Social & Content/API
 License:    Apache-2.0
 Source0:    oauth2-%{version}.tar.gz
+
+%if "%{?tizen_version}" == "3.0" && %{with x}
+ExclusiveArch:
+%endif
 
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
