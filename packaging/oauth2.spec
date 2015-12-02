@@ -1,21 +1,25 @@
 Name:       oauth2
 Summary:    Tizen oauth 2.0 Framework
-Version:    0.0.1
+Version:    0.0.3
 Release:    1
 Group:      Social & Content/API
 License:    Apache-2.0
 Source0:    oauth2-%{version}.tar.gz
 
+%if "%{?profile}" == "wearable"
+ExcludeArch: %{arm} %ix86 x86_64
+%endif
+
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(bundle)
-BuildRequires:  pkgconfig(capi-base-common)
-BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  pkgconfig(efl-extension)
+BuildRequires:	pkgconfig(capi-base-common)
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(efl-extension)
 %if "%{?tizen_version}" == "3.0"
-BuildRequires: pkgconfig(chromium-efl)
+BuildRequires:	pkgconfig(chromium-efl)
 %else
-BuildRequires: pkgconfig(ewebkit2)
+BuildRequires:	pkgconfig(ewebkit2)
 %endif
 
 BuildRequires:  pkgconfig(json-glib-1.0)
