@@ -1,6 +1,6 @@
 Name:       oauth2
 Summary:    Tizen oauth 2.0 Framework
-Version:    0.0.1
+Version:    0.0.3
 Release:    1
 Group:      Social & Content/API
 License:    Apache-2.0
