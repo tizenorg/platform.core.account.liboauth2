@@ -102,6 +102,9 @@ oauth2_util_get_params(const char *url_part, bundle **params)
 			tmp_end++;
 
 		char *eq_ptr = strchr(tmp_start, '=');
+		OAUTH2_RETURN_VAL(eq_ptr, {}, OAUTH2_ERROR_INVALID_PARAMETER,
+			"Could not find = character");
+
 		int key_size = (eq_ptr - tmp_start) + 1;
 		char *key = (char *) malloc((key_size) * sizeof(char));
 		OAUTH2_RETURN_VAL(key, {}, OAUTH2_ERROR_OUT_OF_MEMORY,
@@ -109,13 +112,15 @@ oauth2_util_get_params(const char *url_part, bundle **params)
 		memset(key, '\0', ((eq_ptr - tmp_start) + 1) * sizeof(char));
 		strncpy(key, tmp_start, (eq_ptr - tmp_start));
 
-		if (eq_ptr != NULL)
-			eq_ptr++;
+		eq_ptr++;
 
 		key_size = (tmp_end - eq_ptr) + 1;
 		char *val = (char *) malloc((key_size) * sizeof(char));
-		OAUTH2_RETURN_VAL(val, {}, OAUTH2_ERROR_OUT_OF_MEMORY,
-			"Out of memory");
+		if (val == NULL) {
+			OAUTH2_FREE(key);
+			return OAUTH2_ERROR_OUT_OF_MEMORY;
+		}
+
 		memset(val, '\0', ((tmp_end - eq_ptr) + 1) * sizeof(char));
 		strncpy(val, eq_ptr, (tmp_end - eq_ptr));
 
