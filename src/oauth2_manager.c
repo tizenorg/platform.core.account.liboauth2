@@ -16,6 +16,7 @@
  */
 
 #include <efl_extension.h>
+#include <tpkp_curl.h>
 
 #include "oauth2_manager.h"
 #include "oauth2_util.h"
@@ -483,6 +484,8 @@ __curl_post_request(oauth2_manager_s *mgr_handle, const char *url,
 		OAUTH2_LOG_I("__curl_post_request post body=[%s]", post_body);
 
 	curl_easy_setopt(mgr_handle->curl_handle, CURLOPT_URL, url);
+	curl_easy_setopt(mgr_handle->curl_handle, CURLOPT_SSL_VERIFYPEER, 1L);
+	curl_easy_setopt(mgr_handle->curl_handle, CURLOPT_SSL_CTX_FUNCTION, tpkp_curl_ssl_ctx_callback);
 	curl_easy_setopt(mgr_handle->curl_handle, CURLOPT_POSTFIELDS,
 		post_body);
 	char *data = NULL;
@@ -496,6 +499,8 @@ __curl_post_request(oauth2_manager_s *mgr_handle, const char *url,
 	OAUTH2_LOG_I("Response id curl code=[%d]", *curl_err);
 	if (*curl_err != CURLE_OK) {
 		curl_easy_cleanup(mgr_handle->curl_handle);
+		tpkp_curl_cleanup();
+
 		return NULL;
 	}
 	*http_code = 0;
@@ -505,9 +510,14 @@ __curl_post_request(oauth2_manager_s *mgr_handle, const char *url,
 	if (*http_code != 200) {
 		OAUTH2_LOG_I("http_code=[%ld]", *http_code);
 		curl_easy_cleanup(mgr_handle->curl_handle);
+		tpkp_curl_cleanup();
+
 		return NULL;
 	}
+
 	curl_easy_cleanup(mgr_handle->curl_handle);
+	tpkp_curl_cleanup();
+
 	mgr_handle->curl_handle = NULL;
 
 	OAUTH2_LOG_I("__curl_post_request end");
