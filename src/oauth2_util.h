@@ -42,29 +42,29 @@
 #endif
 
 #define OAUTH2_LOG_E(fmt, args...) LOGE("[%s:%d] "fmt"\n", __func__, \
-		__LINE__, ##args)	//LCOV_EXCL_LINE
+		__LINE__, ##args)	/* LCOV_EXCL_LINE */
 
 #define OAUTH2_LOG_D(fmt, args...) LOGD("[%s:%d] "fmt"\n", __func__, \
-		__LINE__, ##args)	//LCOV_EXCL_LINE
+		__LINE__, ##args)	/* LCOV_EXCL_LINE */
 
 #define OAUTH2_LOG_I(fmt, args...) LOGI("[%s:%d] "fmt"\n", __func__, \
-		__LINE__, ##args)	//LCOV_EXCL_LINE
+		__LINE__, ##args)	/* LCOV_EXCL_LINE */
 
 #define OAUTH2_RETURN_VAL(eval, expr, ret_val, X) \
 	if (!(eval)) { \
 	expr; \
 	OAUTH2_LOG_E(X); \
 	return ret_val; \
-} else {;}	//LCOV_EXCL_LINE
+} else { ; }	/* LCOV_EXCL_LINE */
 
 #define OAUTH2_FREE(ptr) \
 	if (ptr != NULL) { \
 		free(ptr); \
 		ptr = NULL; \
-	}	//LCOV_EXCL_LINE
+	}	/* LCOV_EXCL_LINE */
 
 int oauth2_util_get_query(const char *url, char **query);
 int oauth2_util_get_fragment(const char *url, char **fragment);
-int oauth2_util_get_params(const char* url_part, bundle **params);
+int oauth2_util_get_params(const char *url_part, bundle **params);
 
 #endif /* _OAUTH2_UTIL_H_ */

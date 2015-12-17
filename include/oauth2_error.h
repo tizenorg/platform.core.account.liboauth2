@@ -38,7 +38,7 @@
  * @since_tizen 2.4
  * @privlevel public
  */
-typedef struct oauth2_error_s* oauth2_error_h;
+typedef struct oauth2_error_s *oauth2_error_h;
 
 /**
  * @brief Gets error code.

@@ -37,7 +37,7 @@
  * @brief The structure type for OAuth2 Request handle.
  * @since_tizen 2.4
  */
-typedef struct oauth2_request_s* oauth2_request_h;
+typedef struct oauth2_request_s *oauth2_request_h;
 
 /**
  * @brief Creates oauth2_request_h handle.

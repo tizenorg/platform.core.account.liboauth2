@@ -22,9 +22,9 @@
 #include <bundle.h>
 #include <curl/curl.h>
 
-#ifdef WITH_CHROMIUM		
-#include <ewk_chromium.h>		
-#else		
+#ifdef WITH_CHROMIUM
+#include <ewk_chromium.h>
+#else
 #include <EWebKit.h>
 #include <ewk_view.h>
 #endif
@@ -92,29 +92,25 @@
 
 #define OAUTH2_LOADING_POP_UP_TEXT			"Loading..."
 
-typedef enum{
+typedef enum {
 	REQUEST_ACCESS_TOKEN = 1,
 	REQUEST_AUTHORIZATION_CODE
 } _oauth_request_function;
 
-typedef struct _oauth2_request_s
-{
+typedef struct _oauth2_request_s {
 	bundle *request_data;
-}oauth2_request_s;
+} oauth2_request_s;
 
-typedef struct _oauth2_error_s
-{
+typedef struct _oauth2_error_s {
 	bundle *error_data;
-}oauth2_error_s;
+} oauth2_error_s;
 
-typedef struct _oauth2_response_s
-{
+typedef struct _oauth2_response_s {
 	oauth2_error_s *error;
 	bundle *response_data;
-}oauth2_response_s;
+} oauth2_response_s;
 
-typedef struct _oauth2_manager_s
-{
+typedef struct _oauth2_manager_s {
 	oauth2_request_s *request;
 	Evas_Object *login_win;
 	Evas_Object *content_box;
@@ -134,7 +130,7 @@ typedef struct _oauth2_manager_s
 	void *user_data;
 	void *temp_data;
 	bool is_webview_active;
-}oauth2_manager_s;
+} oauth2_manager_s;
 
 int _oauth2_response_create(oauth2_response_s **response);
 

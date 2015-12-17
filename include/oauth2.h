@@ -39,4 +39,4 @@
  * @}
  */
 
-#endif // _OAUTH2_H_
+#endif /* _OAUTH2_H_ */

@@ -37,7 +37,7 @@
  * @brief The structure type for OAuth2 Response handle.
  * @since_tizen 2.4
  */
-typedef struct oauth2_response_s* oauth2_response_h;
+typedef struct oauth2_response_s *oauth2_response_h;
 
 /**
  * @brief Destroys the received oauth2_response_h handle.

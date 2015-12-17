@@ -45,7 +45,7 @@
  * @brief The structure type for OAuth2 Manager handle.
  * @since_tizen 2.4
  */
-typedef struct oauth2_manager_s* oauth2_manager_h;
+typedef struct oauth2_manager_s *oauth2_manager_h;
 
 /**
  * @brief Creates oauth2_manager_h handle.
@@ -88,7 +88,7 @@ OAUTH2_API int oauth2_manager_destroy(oauth2_manager_h handle);
  * @pre oauth2_manager_request_token() must be called to get this callback invoked.
  * @see oauth2_manager_request_token()
  */
-typedef void (*oauth2_token_cb)(oauth2_response_h response, void* user_data);
+typedef void (*oauth2_token_cb)(oauth2_response_h response, void *user_data);
 
 /**
  * @brief Request OAuth 2.0 access token.
@@ -127,7 +127,7 @@ OAUTH2_API int oauth2_manager_request_token(oauth2_manager_h handle, oauth2_requ
  * @pre oauth2_manager_request_authorization_grant() must be called to get this callback invoked.
  * @see oauth2_manager_request_authorization_grant()
  */
-typedef void (*oauth2_auth_grant_cb)(oauth2_response_h response, void* user_data);
+typedef void (*oauth2_auth_grant_cb)(oauth2_response_h response, void *user_data);
 
 /**
  * @brief Request authorization grant.
@@ -166,7 +166,7 @@ OAUTH2_API int oauth2_manager_request_authorization_grant(oauth2_manager_h handl
  * @pre oauth2_manager_request_access_token() must be called to get this callback invoked.
  * @see oauth2_manager_request_access_token()
  */
-typedef void (*oauth2_access_token_cb)(oauth2_response_h response, void* user_data);
+typedef void (*oauth2_access_token_cb)(oauth2_response_h response, void *user_data);
 
 /**
  * @brief Requests an access token.
@@ -205,7 +205,7 @@ OAUTH2_API int oauth2_manager_request_access_token(oauth2_manager_h handle, oaut
  * @pre oauth2_manager_refresh_access_token() must be called to get this callback invoked.
  * @see oauth2_manager_refresh_access_token().
  */
-typedef void (*oauth2_refresh_token_cb)(oauth2_response_h response, void* user_data);
+typedef void (*oauth2_refresh_token_cb)(oauth2_response_h response, void *user_data);
 
 /**
  * @brief Requests a refresh token.
