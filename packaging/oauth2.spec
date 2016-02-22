@@ -6,10 +6,6 @@ Group:      Social & Content/API
 License:    Apache-2.0
 Source0:    oauth2-%{version}.tar.gz
 
-%if "%{?profile}" == "wearable"
-ExcludeArch: %{arm} %ix86 x86_64
-%endif
-
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(bundle)
