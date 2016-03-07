@@ -22,7 +22,7 @@ if(DEFINED EXCLUDE_EWK_ERR)
     add_definitions(-DWITHOUT_EWK_ERROR)
 endif()
 
-if(DEFINED USE_CHROMIUM_EFL)
+if(USE_CHROMIUM_EFL)
 	add_definitions(-DWITH_CHROMIUM)
 	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas chromium-efl json-glib-1.0 elementary  tpkp-curl)
 else()
