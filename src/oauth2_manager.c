@@ -802,7 +802,7 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 				"Server response does not contain query",
 				&(mgr_handle->response));
 			__send_response_to_caller(mgr_handle);
-
+			OAUTH2_FREE(params);
 			return;
 		}
 
