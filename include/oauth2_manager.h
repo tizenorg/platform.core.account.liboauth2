@@ -43,14 +43,14 @@
 
 /**
  * @brief The structure type for OAuth2 Manager handle.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef struct oauth2_manager_s *oauth2_manager_h;
 
 /**
  * @brief Creates oauth2_manager_h handle.
  * @remarks It must be freed using oauth2_manager_destroy().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[out]  handle  The created handle
@@ -66,7 +66,7 @@ OAUTH2_API int oauth2_manager_create(oauth2_manager_h *handle);
 
 /**
  * @brief Destroys oauth2_manager_h handle.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle The oauth2_manager handle.
@@ -80,7 +80,7 @@ OAUTH2_API int oauth2_manager_destroy(oauth2_manager_h handle);
 
 /**
  * @brief Called when the oauth2_manager_request_token() resopnse comes.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * param[in] response The response. The response must be released using oauth2_response_destroy().
  * param[in] user_data The user data passed from the callback function.
@@ -94,7 +94,7 @@ typedef void (*oauth2_token_cb)(oauth2_response_h response, void *user_data);
  * @brief Request OAuth 2.0 access token.
  * @details The response is delivered via oauth2_token_cb().
  * "internet" privilege is required to call this API. Note, only one pending request is allowed.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle   The oauth2_manager_handle.
@@ -119,7 +119,7 @@ OAUTH2_API int oauth2_manager_request_token(oauth2_manager_h handle, oauth2_requ
 
 /**
  * @brief Called when oauth2_manager_request_authorization_grant() response comes.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in] response The response. The response must be released using oauth2_response_destroy().
  * param[in] user_data The user data passed from the callback function.
@@ -133,7 +133,7 @@ typedef void (*oauth2_auth_grant_cb)(oauth2_response_h response, void *user_data
  * @brief Request authorization grant.
  * @details The response is delivered via oauth2_auth_grant_cb().
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle   The oauth2_manager handle.
@@ -158,7 +158,7 @@ OAUTH2_API int oauth2_manager_request_authorization_grant(oauth2_manager_h handl
 
 /**
  * @brief Called when oauth2_manager_request_access_token() response comes.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in] response The response. The response must be released using oauth2_response_destroy().
  * param[in] user_data The user data passed from the callback function.
@@ -172,7 +172,7 @@ typedef void (*oauth2_access_token_cb)(oauth2_response_h response, void *user_da
  * @brief Requests an access token.
  * @details The response is delivered via oauth2_access_token_cb() callback.
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle   The oauth2_manager handle.
@@ -197,7 +197,7 @@ OAUTH2_API int oauth2_manager_request_access_token(oauth2_manager_h handle, oaut
 
 /**
  * @brief Called when oauth2_manager_refresh_access_token() response comes.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in] response The response. The response must be released using oauth2_response_destroy().
  * param[in] user_data The user data passed from the callback function.
@@ -211,7 +211,7 @@ typedef void (*oauth2_refresh_token_cb)(oauth2_response_h response, void *user_d
  * @brief Requests a refresh token.
  * @details The response is delivered via oauth2_refresh_token_cb() callback.
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle   The oauth2_manager handle.
@@ -236,7 +236,7 @@ OAUTH2_API int oauth2_manager_refresh_access_token(oauth2_manager_h handle, oaut
 
 /**
  * @brief Returns whether oauth2_manager related request is pending.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in] handle The auth2_manager handle.
  * @retval     false No pending request
@@ -246,7 +246,7 @@ OAUTH2_API bool oauth2_manager_is_request_in_progress(oauth2_manager_h handle);
 
 /**
  * @brief Clears the cookies.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle The oauth2_manager handle.
@@ -261,7 +261,7 @@ OAUTH2_API int oauth2_manager_clear_cookies(oauth2_manager_h handle);
 
 /**
  * @brief Clears the cache.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @param[in] handle The oauth2_manager handle.
