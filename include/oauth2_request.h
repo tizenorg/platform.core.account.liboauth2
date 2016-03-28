@@ -35,14 +35,14 @@
 
 /**
  * @brief The structure type for OAuth2 Request handle.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  */
 typedef struct oauth2_request_s *oauth2_request_h;
 
 /**
  * @brief Creates oauth2_request_h handle.
  * @details The handle must be freed via oauth2_request_destroy().
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[out] handle The created oauth2_request handle, else NULL for error cases.
@@ -57,7 +57,7 @@ OAUTH2_API int oauth2_request_create(oauth2_request_h *handle);
 
 /**
  * @brief Destroys oauth2_request_h handle.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The oauth2_request handle to destory.
@@ -71,7 +71,7 @@ OAUTH2_API int oauth2_request_destroy(oauth2_request_h handle);
 
 /**
  * @brief Sets authorization end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -87,7 +87,7 @@ OAUTH2_API int oauth2_request_set_auth_end_point_url(oauth2_request_h handle, co
 
 /**
  * @brief Sets access token end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -103,7 +103,7 @@ OAUTH2_API int oauth2_request_set_token_end_point_url(oauth2_request_h handle, c
 
 /**
  * @brief Sets redirection URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -119,7 +119,7 @@ OAUTH2_API int oauth2_request_set_redirection_url(oauth2_request_h handle, const
 
 /**
  * @brief Sets refresh token end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -135,7 +135,7 @@ OAUTH2_API int oauth2_request_set_refresh_token_url(oauth2_request_h handle, con
 
 /**
  * @brief Sets refresh token. Used mostly while using oauth2_manager_refresh_access_token().
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -151,7 +151,7 @@ OAUTH2_API int oauth2_request_set_refresh_token(oauth2_request_h handle, char *r
 
 /**
  * @brief Sets response type.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -167,7 +167,7 @@ OAUTH2_API int oauth2_request_set_response_type(oauth2_request_h handle, oauth2_
 
 /**
  * @brief Sets client id.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -183,7 +183,7 @@ OAUTH2_API int oauth2_request_set_client_id(oauth2_request_h handle, const char 
 
 /**
  * @brief Sets client secret.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -199,7 +199,7 @@ OAUTH2_API int oauth2_request_set_client_secret(oauth2_request_h handle, const c
 
 /**
  * @brief Sets client authentication type. Default is OAUTH2_CLIENT_AUTHENTICATION_TYPE_BASIC.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -218,7 +218,7 @@ OAUTH2_API int oauth2_request_set_client_authentication_type(oauth2_request_h ha
 
 /**
  * @brief Sets scope.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -234,7 +234,7 @@ OAUTH2_API int oauth2_request_set_scope(oauth2_request_h handle, const char *sco
 
 /**
  * @brief Sets state.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -250,7 +250,7 @@ OAUTH2_API int oauth2_request_set_state(oauth2_request_h handle, const char *sta
 
 /**
  * @brief Sets grant type.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -266,7 +266,7 @@ OAUTH2_API int oauth2_request_set_grant_type(oauth2_request_h handle, oauth2_gra
 
 /**
  * @brief Sets authorization code.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -284,7 +284,7 @@ OAUTH2_API int oauth2_request_set_authorization_code(oauth2_request_h handle, co
 
 /**
  * @brief Sets user name.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -300,7 +300,7 @@ OAUTH2_API int oauth2_request_set_user_name(oauth2_request_h handle, const char 
 
 /**
  * @brief Sets password.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -316,7 +316,7 @@ OAUTH2_API int oauth2_request_set_password(oauth2_request_h handle, const char *
 
 /**
  * @brief Adds custom key-value pair to the request.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The request handle.
@@ -335,7 +335,7 @@ OAUTH2_API int oauth2_request_add_custom_data(oauth2_request_h handle, const cha
 
 /**
  * @brief Gets authorization end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free url
@@ -353,7 +353,7 @@ OAUTH2_API int oauth2_request_get_auth_end_point_url(oauth2_request_h handle, ch
 
 /**
  * @brief Gets access token end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free url
@@ -371,7 +371,7 @@ OAUTH2_API int oauth2_request_get_token_end_point_url(oauth2_request_h handle, c
 
 /**
  * @brief Gets redirection URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free url
@@ -389,7 +389,7 @@ OAUTH2_API int oauth2_request_get_redirection_url(oauth2_request_h handle, char 
 
 /**
  * @brief Gets refresh token end point URL.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free url
@@ -407,7 +407,7 @@ OAUTH2_API int oauth2_request_get_refresh_token_url(oauth2_request_h handle, cha
 
 /**
  * @brief Sets refresh token.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free refresh_token
@@ -425,7 +425,7 @@ OAUTH2_API int oauth2_request_get_refresh_token(oauth2_request_h handle, char **
 
 /**
  * @brief Gets response type.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free response_type
@@ -443,7 +443,7 @@ OAUTH2_API int oauth2_request_get_response_type(oauth2_request_h handle, oauth2_
 
 /**
  * @brief Gets client id.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free client_id
@@ -461,7 +461,7 @@ OAUTH2_API int oauth2_request_get_client_id(oauth2_request_h handle, char **clie
 
 /**
  * @brief Gets client secret.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free client_secret
@@ -479,7 +479,7 @@ OAUTH2_API int oauth2_request_get_client_secret(oauth2_request_h handle, char **
 
 /**
  * @brief Gets scope.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free scope
@@ -497,7 +497,7 @@ OAUTH2_API int oauth2_request_get_scope(oauth2_request_h handle, char **scope);
 
 /**
  * @brief Gets state.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free state
@@ -515,7 +515,7 @@ OAUTH2_API int oauth2_request_get_state(oauth2_request_h handle, char **state);
 
 /**
  * @brief Gets grant type.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free grant_type
@@ -533,7 +533,7 @@ OAUTH2_API int oauth2_request_get_grant_type(oauth2_request_h handle, oauth2_gra
 
 /**
  * @brief Get authorization code.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free code
@@ -551,7 +551,7 @@ OAUTH2_API int oauth2_request_get_authorization_code(oauth2_request_h handle, ch
 
 /**
  * @brief Gets user name.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free user_name
@@ -569,7 +569,7 @@ OAUTH2_API int oauth2_request_get_user_name(oauth2_request_h handle, char **user
 
 /**
  * @brief Gets password.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free password
@@ -587,7 +587,7 @@ OAUTH2_API int oauth2_request_get_password(oauth2_request_h handle, char **passw
 
 /**
  * @brief Gets the custom value.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free custom_value
