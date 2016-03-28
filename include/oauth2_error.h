@@ -35,14 +35,14 @@
 
 /**
  * @brief The structure type for OAuth2 Error handle.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  */
 typedef struct oauth2_error_s *oauth2_error_h;
 
 /**
  * @brief Gets error code.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @remarks		You must not free server_error_code and platform_error_code
@@ -61,7 +61,7 @@ OAUTH2_API int oauth2_error_get_code(oauth2_error_h handle, int *server_error_co
 
 /**
  * @brief Gets error description.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @remarks		You must not free description
@@ -79,7 +79,7 @@ OAUTH2_API int oauth2_error_get_description(oauth2_error_h handle, char **descri
 
 /**
  * @brief Gets error uri.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @remarks		You must not free uri
@@ -97,7 +97,7 @@ OAUTH2_API int oauth2_error_get_uri(oauth2_error_h handle, char **uri);
 
 /**
  * @brief Gets the custom data.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  *
  * @remarks		You must not free custom_value

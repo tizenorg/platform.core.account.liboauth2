@@ -36,7 +36,7 @@
 
 /**
  * @brief Enumerations for Client authentication scheme, used to sign client id and client secret accordingly.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks Facebook and Google does not support HTTP Basic Authentication, instead they require client credentials to be sent via request body.
  * Default is OAUTH2_CLIENT_AUTHENTICATION_TYPE_BASIC (http://tools.ietf.org/html/rfc2617#section-2)
  *
@@ -52,7 +52,7 @@ typedef enum {
 
 /**
  * @brief Enumerations to set grant_type.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see oauth2_request_set_grant_type()
  */
@@ -67,7 +67,7 @@ typedef enum {
 
 /**
  * @brief Enumerations to set response_type.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see oauth2_request_set_response_type()
  */
@@ -80,7 +80,7 @@ typedef enum {
 
 /**
  *  @brief    Enumerations of error codes for oauth2 APIs.
- *  @since_tizen  2.4
+ *  @since_tizen  3.0
  */
 typedef enum {
 	OAUTH2_ERROR_NONE                   = TIZEN_ERROR_NONE,                   /**< Successful */
