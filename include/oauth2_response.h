@@ -35,13 +35,13 @@
 
 /**
  * @brief The structure type for OAuth2 Response handle.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  */
 typedef struct oauth2_response_s *oauth2_response_h;
 
 /**
  * @brief Destroys the received oauth2_response_h handle.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @param[in] handle The response handle.
@@ -55,7 +55,7 @@ OAUTH2_API int oauth2_response_destroy(oauth2_response_h handle);
 
 /**
  * @brief Gets the authorization code.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free code
@@ -75,7 +75,7 @@ OAUTH2_API int oauth2_response_get_authorization_code(oauth2_response_h handle, 
 
 /**
  * @brief Gets state.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free state
@@ -93,7 +93,7 @@ OAUTH2_API int oauth2_response_get_state(oauth2_response_h handle, char **state)
 
 /**
  * @brief Gets access token.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free access_token
@@ -111,7 +111,7 @@ OAUTH2_API int oauth2_response_get_access_token(oauth2_response_h handle, char *
 
 /**
  * @brief Gets token type.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free token_type
@@ -129,7 +129,7 @@ OAUTH2_API int oauth2_response_get_token_type(oauth2_response_h handle, char **t
 
 /**
  * @brief Gets expiry time.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free expires_in
@@ -147,7 +147,7 @@ OAUTH2_API int oauth2_response_get_expires_in(oauth2_response_h handle, long lon
 
 /**
  * @brief Gets refresh token.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free refresh_token
@@ -165,7 +165,7 @@ OAUTH2_API int oauth2_response_get_refresh_token(oauth2_response_h handle, char 
 
 /**
  * @brief Gets scope.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free scope
@@ -183,7 +183,7 @@ OAUTH2_API int oauth2_response_get_scope(oauth2_response_h handle, char **scope)
 
 /**
  * @brief Gets error.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free error
@@ -198,14 +198,14 @@ OAUTH2_API int oauth2_response_get_scope(oauth2_response_h handle, char **scope)
  * @retval     #OAUTH2_ERROR_VALUE_NOT_FOUND    Value not found
  *
  * @see @oauth2_error_h
- * @since_tizen 2.4
+ * @since_tizen 3.0
  */
 OAUTH2_API int oauth2_response_get_error(oauth2_response_h handle, oauth2_error_h *error);
 
 /**
  * @brief Gets the custom data.
  * @details Some service providers send additional keys not specified in OAuth 2.0 RFC. To get those additional fields this API needs to be used.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @privlevel public
  *
  * @remarks		You must not free custom_value
