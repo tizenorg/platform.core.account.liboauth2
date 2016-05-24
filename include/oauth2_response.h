@@ -24,7 +24,7 @@
 
 /**
  * @file oauth2_response.h
- * @brief The oauth 2.0 response APIs are used to get various parameters received from server.
+ * @brief The OAuth 2.0 response APIs are used to get various parameters received from server.
  * Refer to service provider documentation about the allowed and additional fields.
  */
 
@@ -34,7 +34,7 @@
  */
 
 /**
- * @brief The structure type for OAuth2 Response handle.
+ * @brief The structure type for OAuth 2.0 Response handle.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef struct oauth2_response_s *oauth2_response_h;
@@ -222,7 +222,7 @@ OAUTH2_API int oauth2_response_get_error(oauth2_response_h handle, oauth2_error_
  */
 OAUTH2_API int oauth2_response_get_custom_data(oauth2_response_h handle, const char *custom_key, char **custom_value);
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */

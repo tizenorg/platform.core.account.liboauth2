@@ -26,7 +26,7 @@
 
 /**
  * Tizen OAuth 2.0 Authorization Framework.
- * Refer to http://tools.ietf.org/html/rfc6749 about oauth 2.0. Also service provider document needs to be referred for using end points and additional parameters.
+ * Refer to http://tools.ietf.org/html/rfc6749 about OAuth 2.0. Also service provider document needs to be referred for using end points and additional parameters.
  */
 
 /**
@@ -34,9 +34,9 @@
  * @{
  */
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */
 
-#endif /* _OAUTH2_H_ */
+#endif // _OAUTH2_H_

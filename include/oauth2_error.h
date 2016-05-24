@@ -24,7 +24,7 @@
 
 /**
  * @file oauth2_error.h
- * @brief The oauth 2.0 error APIs are used to get error fields received from server.
+ * @brief The OAuth 2.0 error APIs are used to get error fields received from server.
  * Refer to service provider documentation about the allowed and additional fields.
  */
 
@@ -34,9 +34,9 @@
  */
 
 /**
- * @brief The structure type for OAuth2 Error handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
+ * @brief The structure type for OAuth 2.0 Error handle.
+ * @since_tizen 2.4
+
  */
 typedef struct oauth2_error_s *oauth2_error_h;
 
@@ -114,7 +114,7 @@ OAUTH2_API int oauth2_error_get_uri(oauth2_error_h handle, char **uri);
  */
 OAUTH2_API int oauth2_error_get_custom_data(oauth2_error_h handle, const char *custom_key, char **custom_value);
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */

@@ -24,9 +24,9 @@ endif()
 
 if(USE_CHROMIUM_EFL)
 	add_definitions(-DWITH_CHROMIUM)
-	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas chromium-efl json-glib-1.0 elementary  tpkp-curl)
+	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas chromium-efl json-glib-1.0 elementary tpkp-curl cynara-client capi-system-info)
 else()
-	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas ewebkit2 json-glib-1.0 elementary  tpkp-curl)
+	pkg_check_modules(clientpkgs REQUIRED dlog glib-2.0 gio-2.0 gio-unix-2.0 capi-base-common libcurl efl-extension ecore evas ewebkit2 json-glib-1.0 elementary tpkp-curl cynara-client capi-system-info)
 endif()
 
 FOREACH(flag ${clientpkgs_CFLAGS})

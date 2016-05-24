@@ -22,7 +22,7 @@
 
 /**
  * @file     oauth2_types.h
- * @brief    This file defines common types and enums of oauth2.
+ * @brief    This file defines common types and enums of OAuth 2.0.
  */
 
 /**
@@ -42,13 +42,12 @@
  *
  * @see oauth2_request_set_client_authentication_type()
  */
-typedef enum {
-	OAUTH2_CLIENT_AUTHENTICATION_TYPE_MIN = -1,/**< @internal**/
+typedef enum
+{
 	OAUTH2_CLIENT_AUTHENTICATION_TYPE_BASIC,/**< HTTP Basic Authentication for client authentication.**/
 	OAUTH2_CLIENT_AUTHENTICATION_TYPE_DIGEST,/**< HTTP Digest Authentication for client authentication.**/
 	OAUTH2_CLIENT_AUTHENTICATION_TYPE_REQUEST_BODY,/**< Client credentials are sent via request body**/
-	OAUTH2_CLIENT_AUTHENTICATION_TYPE_MAX,/**< @internal**/
-} oauth2_client_authentication_type_e;
+}oauth2_client_authentication_type_e;
 
 /**
  * @brief Enumerations to set grant_type.
@@ -56,14 +55,13 @@ typedef enum {
  *
  * @see oauth2_request_set_grant_type()
  */
-typedef enum {
-	OAUTH2_GRANT_TYPE_MIN = -1, /**< @internal**/
+typedef enum
+{
 	OAUTH2_GRANT_TYPE_AUTH_CODE, /**< Access Token Request for Authorization Code Grant type.**/
 	OAUTH2_GRANT_TYPE_PASSWORD, /**< Access Token Request for Resource Owner Password Credentials Grant type.**/
 	OAUTH2_GRANT_TYPE_CLIENT_CREDENTIALS, /**< Access Token Request for Client Credentials Grant type.**/
 	OAUTH2_GRANT_TYPE_REFRESH, /**< Refresh Token Request.**/
-	OAUTH2_GRANT_TYPE_MAX, /**< @internal**/
-} oauth2_grant_type_e;
+}oauth2_grant_type_e;
 
 /**
  * @brief Enumerations to set response_type.
@@ -71,35 +69,35 @@ typedef enum {
  *
  * @see oauth2_request_set_response_type()
  */
-typedef enum {
-	OAUTH2_RESPONSE_TYPE_MIN = -1, /**< @internal**/
+typedef enum
+{
 	OAUTH2_RESPONSE_TYPE_CODE,/**< Requesting an authorization code as response type.**/
 	OAUTH2_RESPONSE_TYPE_TOKEN,/**< Requesting an access token(implicit grant) as response type.**/
-	OAUTH2_RESPONSE_TYPE_MAX, /**< @internal**/
-} oauth2_response_type_e;
+}oauth2_response_type_e;
 
 /**
  *  @brief    Enumerations of error codes for oauth2 APIs.
- *  @since_tizen  3.0
+ *  @since_tizen  @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
-typedef enum {
-	OAUTH2_ERROR_NONE                   = TIZEN_ERROR_NONE,                   /**< Successful */
-	OAUTH2_ERROR_OUT_OF_MEMORY             = TIZEN_ERROR_OUT_OF_MEMORY,              /**< Out of memory */
-	OAUTH2_ERROR_INVALID_PARAMETER         = TIZEN_ERROR_INVALID_PARAMETER,        /**< Invalid parameter */
+typedef enum
+{
+    OAUTH2_ERROR_NONE                   = TIZEN_ERROR_NONE,                   /**< Successful */
+    OAUTH2_ERROR_OUT_OF_MEMORY             = TIZEN_ERROR_OUT_OF_MEMORY,              /**< Out of memory */
+    OAUTH2_ERROR_INVALID_PARAMETER         = TIZEN_ERROR_INVALID_PARAMETER,        /**< Invalid parameter */
 
-	OAUTH2_ERROR_ALREADY_IN_PROGRESS = TIZEN_ERROR_ALREADY_IN_PROGRESS, /**< Operation already in progress */
-	OAUTH2_ERROR_NOT_SUPPORTED = TIZEN_ERROR_NOT_SUPPORTED, /**< Operation not supported */
-	OAUTH2_ERROR_PERMISSION_DENIED = TIZEN_ERROR_PERMISSION_DENIED, /**< Permission denied */
-	OAUTH2_ERROR_PARSE_FAILED = TIZEN_ERROR_ACCOUNT_OAUTH | 0x01, /**< Response parse failed */
-	OAUTH2_ERROR_NETWORK_ERROR = TIZEN_ERROR_ACCOUNT_OAUTH | 0x02, /**< Network error */
-	OAUTH2_ERROR_SERVER = TIZEN_ERROR_ACCOUNT_OAUTH | 0x03, /**< Server error */
-	OAUTH2_ERROR_USER_CANCELLED = TIZEN_ERROR_ACCOUNT_OAUTH | 0x04, /**< User cancelled the operation  */
+    OAUTH2_ERROR_ALREADY_IN_PROGRESS = TIZEN_ERROR_ALREADY_IN_PROGRESS, /**< Operation already in progress */
+    OAUTH2_ERROR_NOT_SUPPORTED = TIZEN_ERROR_NOT_SUPPORTED, /**< Operation not supported */
+    OAUTH2_ERROR_PERMISSION_DENIED = TIZEN_ERROR_PERMISSION_DENIED, /**< Permission denied */
+    OAUTH2_ERROR_PARSE_FAILED = TIZEN_ERROR_ACCOUNT_OAUTH | 0x01, /**< Response parse failed */
+    OAUTH2_ERROR_NETWORK_ERROR = TIZEN_ERROR_ACCOUNT_OAUTH | 0x02, /**< Network error */
+    OAUTH2_ERROR_SERVER = TIZEN_ERROR_ACCOUNT_OAUTH | 0x03, /**< Server error */
+    OAUTH2_ERROR_USER_CANCELLED = TIZEN_ERROR_ACCOUNT_OAUTH | 0x04, /**< User cancelled the operation  */
 
-	OAUTH2_ERROR_VALUE_NOT_FOUND = TIZEN_ERROR_ACCOUNT_OAUTH | 0x05,	 /**< Value not found */
-	OAUTH2_ERROR_UNKNOWN = TIZEN_ERROR_UNKNOWN /**< Unknown error */
-} oauth2_error_e;
+    OAUTH2_ERROR_VALUE_NOT_FOUND = TIZEN_ERROR_ACCOUNT_OAUTH | 0x05,	 /**< Value not found */
+    OAUTH2_ERROR_UNKNOWN = TIZEN_ERROR_UNKNOWN /**< Unknown error */
+}oauth2_error_e;
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */

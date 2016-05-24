@@ -27,7 +27,7 @@
 
 /**
  * @file oauth2_manager.h
- * @brief The main oauth 2.0 handler APIs.
+ * @brief The main OAuth 2.0 handler APIs.
  * @details The Application must use either:
  * oauth2_manager_request_token
  * or
@@ -42,7 +42,7 @@
  */
 
 /**
- * @brief The structure type for OAuth2 Manager handle.
+ * @brief The structure type for OAuth 2.0 Manager handle.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef struct oauth2_manager_s *oauth2_manager_h;
@@ -96,6 +96,7 @@ typedef void (*oauth2_token_cb)(oauth2_response_h response, void *user_data);
  * "internet" privilege is required to call this API. Note, only one pending request is allowed.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle   The oauth2_manager_handle.
  * @param[in] request  The request handle.
@@ -107,6 +108,7 @@ typedef void (*oauth2_token_cb)(oauth2_response_h response, void *user_data);
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER Invalid input parameter(s) passed.
  * @retval     #OAUTH2_ERROR_ALREADY_IN_PROGRESS The previous request is already in progress.
  * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  * @retval     #OAUTH2_ERROR_PARSE_FAILED Parsing failed.
  * @retval     #OAUTH2_ERROR_NETWORK_ERROR Network Error.
  * @retval     #OAUTH2_ERROR_UNKNOWN Unknown system error.
@@ -135,6 +137,7 @@ typedef void (*oauth2_auth_grant_cb)(oauth2_response_h response, void *user_data
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle   The oauth2_manager handle.
  * @param[in] request  The request handle.
@@ -146,6 +149,7 @@ typedef void (*oauth2_auth_grant_cb)(oauth2_response_h response, void *user_data
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER Invalid input parameter(s) passed.
  * @retval     #OAUTH2_ERROR_ALREADY_IN_PROGRESS The previous request is already in progress.
  * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  * @retval     #OAUTH2_ERROR_PARSE_FAILED Parsing failed.
  * @retval     #OAUTH2_ERROR_NETWORK_ERROR Network Error.
  * @retval     #OAUTH2_ERROR_UNKNOWN Unknown system error.
@@ -174,6 +178,7 @@ typedef void (*oauth2_access_token_cb)(oauth2_response_h response, void *user_da
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle   The oauth2_manager handle.
  * @param[in] request  The request handle.
@@ -185,6 +190,7 @@ typedef void (*oauth2_access_token_cb)(oauth2_response_h response, void *user_da
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER Invalid input parameter(s) passed.
  * @retval     #OAUTH2_ERROR_ALREADY_IN_PROGRESS The previous request is already in progress.
  * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  * @retval     #OAUTH2_ERROR_PARSE_FAILED Parsing failed.
  * @retval     #OAUTH2_ERROR_NETWORK_ERROR Network Error.
  * @retval     #OAUTH2_ERROR_UNKNOWN Unknown system error.
@@ -213,6 +219,7 @@ typedef void (*oauth2_refresh_token_cb)(oauth2_response_h response, void *user_d
  * "internet" privilege is required to call this API. Note, only one pending request is allowed at a time.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle   The oauth2_manager handle.
  * @param[in] request  The request handle.
@@ -224,6 +231,7 @@ typedef void (*oauth2_refresh_token_cb)(oauth2_response_h response, void *user_d
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER Invalid input parameter(s) passed.
  * @retval     #OAUTH2_ERROR_ALREADY_IN_PROGRESS The previous request is already in progress.
  * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  * @retval     #OAUTH2_ERROR_PARSE_FAILED Parsing failed.
  * @retval     #OAUTH2_ERROR_NETWORK_ERROR Network Error.
  * @retval     #OAUTH2_ERROR_UNKNOWN Unknown system error.
@@ -248,6 +256,7 @@ OAUTH2_API bool oauth2_manager_is_request_in_progress(oauth2_manager_h handle);
  * @brief Clears the cookies.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle The oauth2_manager handle.
  *
@@ -256,6 +265,8 @@ OAUTH2_API bool oauth2_manager_is_request_in_progress(oauth2_manager_h handle);
  * @retval     #OAUTH2_ERROR_NONE               Successful
  * @retval     #OAUTH2_ERROR_OUT_OF_MEMORY      Out of Memory
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER  Invalid parameter
+ * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  */
 OAUTH2_API int oauth2_manager_clear_cookies(oauth2_manager_h handle);
 
@@ -263,6 +274,7 @@ OAUTH2_API int oauth2_manager_clear_cookies(oauth2_manager_h handle);
  * @brief Clears the cache.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
+ * @privilege %http://tizen.org/privilege/internet
  *
  * @param[in] handle The oauth2_manager handle.
  *
@@ -271,10 +283,12 @@ OAUTH2_API int oauth2_manager_clear_cookies(oauth2_manager_h handle);
  * @retval     #OAUTH2_ERROR_NONE               Successful
  * @retval     #OAUTH2_ERROR_OUT_OF_MEMORY      Out of Memory
  * @retval     #OAUTH2_ERROR_INVALID_PARAMETER  Invalid parameter
+ * @retval     #OAUTH2_ERROR_PERMISSION_DENIED Permission denied.
+ * @retval     #OAUTH2_ERROR_NOT_SUPPORTED Not supported.
  */
 OAUTH2_API int oauth2_manager_clear_cache(oauth2_manager_h handle);
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */

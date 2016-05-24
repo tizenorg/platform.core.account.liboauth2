@@ -17,10 +17,17 @@
 
 #include <efl_extension.h>
 #include <tpkp_curl.h>
+#include <cynara-client.h>
+#include <cynara-error.h>
+#include <system_info.h>
 
 #include "oauth2_manager.h"
 #include "oauth2_util.h"
 #include "oauth2_private.h"
+
+#define NETWORK_FEATURE "tizen.org/feature/network.internet"
+#define INTERNET_PRIVILEGE "http://tizen.org/privilege/internet"
+#define SMACK_LABEL_LEN 255
 
 static void __send_response_to_caller(oauth2_manager_s *mgr_handle);
 static void __convert_tizen_error_to_oauth_error(int tizen_error,
@@ -61,10 +68,73 @@ oauth2_manager_destroy(oauth2_manager_h handle)
 		"Null Input");
 
 	OAUTH2_FREE(handle);
+
+	ewk_shutdown();
 	return OAUTH2_ERROR_NONE;
 }
 
 /*LCOV_EXCL_START*/
+static bool
+__is_feature_supported(void)
+{
+	bool supported = FALSE;
+	int ret = system_info_get_platform_bool(NETWORK_FEATURE, &supported);
+	OAUTH2_RETURN_VAL(ret == SYSTEM_INFO_ERROR_NONE, {}, false, "network feature support check failed");
+
+	return supported;
+}
+
+static bool
+__check_permission(void)
+{
+	static int has_internet_permission = -1;
+
+	if (-1 == has_internet_permission) {
+		int ret;
+		char smack_label[SMACK_LABEL_LEN + 1] = {0};
+		char uid[10];
+		FILE *fd;
+		cynara *cynara_h;
+
+		ret = cynara_initialize(&cynara_h, NULL);
+		if (CYNARA_API_SUCCESS != ret) {
+			 OAUTH2_LOG_E("cynara_initialize() Fail(%d)", ret);
+			 return false;
+		}
+
+		fd = fopen("/proc/self/attr/current", "r");
+		if (NULL == fd) {
+			 OAUTH2_LOG_E("fopen() Fail(%d)", errno);
+			 return false;
+		}
+
+		ret = fread(smack_label, sizeof(smack_label), 1, fd);
+		fclose(fd);
+		if (ret < 0) {
+			 OAUTH2_LOG_E("fread() Fail(%d)", ret);
+			 return 0;
+		}
+
+		snprintf(uid, sizeof(uid), "%d", getuid());
+
+		ret = cynara_check(cynara_h, smack_label, "", uid, INTERNET_PRIVILEGE);
+		if (CYNARA_API_ACCESS_ALLOWED == ret)
+			has_internet_permission = 1;
+		else
+			has_internet_permission = 0;
+
+		cynara_finish(cynara_h);
+	}
+
+	if (has_internet_permission == 0) {
+		OAUTH2_LOG_E("Privilege denied");
+		return false;
+	}
+
+	OAUTH2_LOG_I("Privilege granted");
+	return true;
+}
+
 static void
 __hide_web_view(oauth2_manager_s *mgr_handle)
 {
@@ -131,11 +201,11 @@ __get_grant_type(char *grant_type_str)
 		return NULL;
 
 	char *str_val = NULL;
-	int grant_type = OAUTH2_GRANT_TYPE_MIN;
+	int grant_type = OAUTH2_GRANT_TYPE_AUTH_CODE;
 	sscanf(grant_type_str, "%d", &grant_type);
 
-	if (grant_type <= OAUTH2_GRANT_TYPE_MIN
-			|| grant_type >= OAUTH2_GRANT_TYPE_MAX) {
+	if (grant_type < OAUTH2_GRANT_TYPE_AUTH_CODE
+			|| grant_type > OAUTH2_GRANT_TYPE_REFRESH) {
 		OAUTH2_LOG_E("Invalid grant_type [%d]", grant_type);
 		return NULL;
 	} else if (grant_type == OAUTH2_GRANT_TYPE_AUTH_CODE)
@@ -158,11 +228,11 @@ __get_response_type(char *response_type_str)
 		return NULL;
 
 	char *str_val = NULL;
-	int response_type = OAUTH2_RESPONSE_TYPE_MIN;
+	int response_type = OAUTH2_RESPONSE_TYPE_CODE;
 	sscanf(response_type_str, "%d", &response_type);
 
-	if (response_type <= OAUTH2_RESPONSE_TYPE_MIN
-			|| response_type >= OAUTH2_RESPONSE_TYPE_MAX) {
+	if (response_type < OAUTH2_RESPONSE_TYPE_CODE
+			|| response_type > OAUTH2_RESPONSE_TYPE_TOKEN) {
 		OAUTH2_LOG_E("Invalid response_type [%d]", response_type);
 		return NULL;
 	} else if (response_type == OAUTH2_RESPONSE_TYPE_CODE)
@@ -331,7 +401,16 @@ __append_to_post_data(CURL *curl_handle, char *post_data, const char *key,
 	OAUTH2_LOG_I("__append_to_post_data start");
 
 	char *encoded_key = curl_easy_escape(curl_handle, key, 0);
+	if (encoded_key == NULL) {
+		OAUTH2_LOG_I("curl encoded key null");
+		return;
+	}
+
 	char *encoded_val = curl_easy_escape(curl_handle, value, 0);
+	if (encoded_val == NULL) {
+		OAUTH2_LOG_I("curl encoded value null");
+		return;
+	}
 
 	strncat(post_data, encoded_key, strlen(encoded_key));
 	strncat(post_data, "=", 1);
@@ -400,6 +479,10 @@ __parse_acc_token_response(const char *response_json,
 
 	oauth2_response_s *response_temp = (oauth2_response_s *)calloc(1,
 		sizeof(oauth2_response_s));
+	if (response_temp == NULL) {
+		OAUTH2_LOG_E("Out of memory");
+		return;
+	}
 	/*
 	 * First find if error key is there, if present only fillup
 	 * oauth2_error_s else fillup oauth2_response_s without
@@ -425,6 +508,7 @@ __parse_acc_token_response(const char *response_json,
 		int ret = oauth2_util_get_params(response_json, &params);
 		if (ret != OAUTH2_ERROR_NONE && params == NULL) {
 			OAUTH2_LOG_E("Server response parse failed");
+
 			goto CATCH;
 		}
 		response_temp->response_data = params;
@@ -440,6 +524,7 @@ __parse_acc_token_response(const char *response_json,
 	root_node = json_parser_get_root(parser);
 	if (root_node == NULL) {
 		OAUTH2_LOG_E("json_parser_get_root() failed");
+
 		goto CATCH;
 	}
 
@@ -447,6 +532,7 @@ __parse_acc_token_response(const char *response_json,
 	root_obj = json_node_get_object((JsonNode *) root_node);
 	if (root_obj == NULL) {
 		OAUTH2_LOG_E("json_node_get_object() failed");
+
 		goto CATCH;
 	}
 
@@ -469,9 +555,13 @@ __parse_acc_token_response(const char *response_json,
 	OAUTH2_LOG_I("__parse_acc_token_response parse finished");
 
 	*response = response_temp;
+    response_temp = NULL;
 
 CATCH:
 	g_object_unref(parser);
+    if (response_temp != NULL)
+        oauth2_response_destroy((oauth2_response_h)response_temp);
+
 	OAUTH2_LOG_I("__parse_acc_token_response end");
 }
 
@@ -796,24 +886,27 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 		== 0) {
 		char *query = NULL;
 		ret = oauth2_util_get_query(response_url, &query);
-		if (ret != OAUTH2_ERROR_NONE && query != NULL) {
+		if (ret != OAUTH2_ERROR_NONE && query == NULL) {
 			__convert_tizen_error_to_oauth_error(
 				OAUTH2_ERROR_SERVER,
 				"Server response does not contain query",
 				&(mgr_handle->response));
 			__send_response_to_caller(mgr_handle);
 
+			bundle_free(params);
+
 			return;
 		}
 
 		ret = oauth2_util_get_params(query, &params);
-		if (ret != OAUTH2_ERROR_NONE && params != NULL) {
+		if (ret != OAUTH2_ERROR_NONE && params == NULL) {
 			__convert_tizen_error_to_oauth_error(
 				OAUTH2_ERROR_PARSE_FAILED,
 				"Server response parse failed",
 				&(mgr_handle->response));
 			__send_response_to_caller(mgr_handle);
 			OAUTH2_FREE(query);
+
 			return;
 		}
 
@@ -822,16 +915,21 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 			is_two_step = TRUE;
 
 		OAUTH2_FREE(query);
+
 	} else if (strcmp(response_type,
 		OAUTH2_PARAMETER_VAL_RESPONSE_TYPE_TOKEN) == 0) {
 		char *fragment = NULL;
 		ret = oauth2_util_get_fragment(response_url, &fragment);
-		if (ret != OAUTH2_ERROR_NONE && fragment != NULL) {
+		if (ret != OAUTH2_ERROR_NONE && fragment == NULL) {
 			__convert_tizen_error_to_oauth_error(
 				OAUTH2_ERROR_SERVER,
 				"Server response does not contain fragment",
 				&(mgr_handle->response));
 			__send_response_to_caller(mgr_handle);
+
+			if (params)
+				bundle_free(params);
+
 			return;
 		}
 
@@ -842,10 +940,13 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 				"Server response parse failed",
 				&(mgr_handle->response));
 			__send_response_to_caller(mgr_handle);
+
 			OAUTH2_FREE(fragment);
+
 			return;
 		}
 		OAUTH2_FREE(fragment);
+
 	} else {
 		/* TODO: Handle custom response_type (for eg, Facebook,
 		 * Soundcloud supports "token_and_code") */
@@ -879,6 +980,10 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 			return;
 		}
 		_request_access_token_by_code(mgr_handle, code_val);
+
+		if (params)
+			bundle_free(params);
+
 	} else {
 		mgr_handle->is_active = FALSE;
 		mgr_handle->response = (oauth2_response_s *)calloc(1,
@@ -990,7 +1095,7 @@ __start_auth_grant_request(oauth2_manager_s *mgr_handle)
 	elm_object_text_set(mgr_handle->loading_popup, OAUTH2_LOADING_POP_UP_TEXT);
 	elm_popup_orient_set(mgr_handle->loading_popup, ELM_POPUP_ORIENT_BOTTOM);
 
-    /* ewk_init(); */
+	ewk_init();
 
 	Evas *canvas = NULL;
 
@@ -1017,8 +1122,18 @@ __start_auth_grant_request(oauth2_manager_s *mgr_handle)
 		EEXT_CALLBACK_BACK, __handle_back_key, mgr_handle);
 
 	ewk_view_url_set(mgr_handle->ewk_view, authorization_url);
-
 	evas_object_size_hint_min_set(mgr_handle->ewk_view, 480, 800);
+
+	/*Ecore_X_Screen *screen = ecore_x_default_screen_get();
+	if (screen != NULL) {
+		int w = 0;
+		int h = 0;
+		ecore_x_screen_size_get (screen, &w, &h);
+		LOGI("Screen info = [%d][%d]", w, h);
+
+		evas_object_size_hint_min_set(mgr_handle->ewk_view, w, h);
+	}*/
+
 	evas_object_size_hint_weight_set(mgr_handle->ewk_view,
 		EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(mgr_handle->ewk_view,
@@ -1055,6 +1170,12 @@ oauth2_manager_request_token(oauth2_manager_h handle, oauth2_request_h request,
 	OAUTH2_RETURN_VAL(request, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"request is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 	OAUTH2_RETURN_VAL(!mgr_impl->is_active, {},
 		OAUTH2_ERROR_ALREADY_IN_PROGRESS, "Already in progress");
@@ -1164,6 +1285,12 @@ oauth2_manager_request_authorization_grant(oauth2_manager_h handle,
 	OAUTH2_RETURN_VAL(request, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"request is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 	OAUTH2_RETURN_VAL(!mgr_impl->is_active, {},
 		OAUTH2_ERROR_ALREADY_IN_PROGRESS, "Already in progress");
@@ -1247,6 +1374,12 @@ oauth2_manager_request_access_token(oauth2_manager_h handle,
 	OAUTH2_RETURN_VAL(request, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"request is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 	OAUTH2_RETURN_VAL(!mgr_impl->is_active, {},
 		OAUTH2_ERROR_ALREADY_IN_PROGRESS, "Already in progress");
@@ -1288,8 +1421,11 @@ oauth2_manager_request_access_token(oauth2_manager_h handle,
 		char *code = NULL;
 		bundle_get_str(mgr_impl->request->request_data,
 			OAUTH2_PARAMETER_KEY_CODE, &code);
-		if (code)
+		if (code) {
 			_request_access_token_by_code(mgr_impl, code);
+			return OAUTH2_ERROR_NONE;
+		}
+
 	} else {
 		/*
 		 * For resource owner pwd and client credentials, grant_type
@@ -1403,6 +1539,12 @@ oauth2_manager_refresh_access_token(oauth2_manager_h handle,
 	OAUTH2_RETURN_VAL(request, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"request is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 	OAUTH2_RETURN_VAL(!mgr_impl->is_active, {},
 		OAUTH2_ERROR_ALREADY_IN_PROGRESS, "Already in progress");
@@ -1466,6 +1608,12 @@ oauth2_manager_clear_cookies(oauth2_manager_h handle)
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"handle is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 
 	Evas_Object *web_view = mgr_impl->ewk_view;
@@ -1502,6 +1650,12 @@ oauth2_manager_clear_cache(oauth2_manager_h handle)
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"handle is Null");
 	/*LCOV_EXCL_START*/
+	OAUTH2_RETURN_VAL(__is_feature_supported(), {}, OAUTH2_ERROR_NOT_SUPPORTED,
+		"network feature not supported");
+
+	OAUTH2_RETURN_VAL(__check_permission(), {}, OAUTH2_ERROR_PERMISSION_DENIED,
+		"permission denied, no internet privilege");
+
 	oauth2_manager_s *mgr_impl = (oauth2_manager_s *)handle;
 
 	Evas_Object *web_view = mgr_impl->ewk_view;
