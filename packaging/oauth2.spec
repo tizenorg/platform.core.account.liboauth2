@@ -21,6 +21,8 @@ BuildRequires:  pkgconfig(ewebkit2)
 BuildRequires:  pkgconfig(json-glib-1.0)
 BuildRequires:  pkgconfig(elementary)
 BuildRequires:  pkgconfig(tpkp-curl)
+BuildRequires:  pkgconfig(cynara-client)
+BuildRequires:  pkgconfig(capi-system-info)
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig

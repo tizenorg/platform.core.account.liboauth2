@@ -24,7 +24,7 @@
 
 /**
  * @file oauth2_request.h
- * @brief The oauth 2.0 request APIs are used to set various parameters to send for oauth 2.0.
+ * @brief The OAuth 2.0 request APIs are used to set various parameters to send for OAuth 2.0.
  * Refer to service provider documentation about the allowed and additional fields.
  */
 
@@ -34,7 +34,7 @@
  */
 
 /**
- * @brief The structure type for OAuth2 Request handle.
+ * @brief The structure type for OAuth 2.0 Request handle.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef struct oauth2_request_s *oauth2_request_h;
@@ -604,7 +604,7 @@ OAUTH2_API int oauth2_request_get_password(oauth2_request_h handle, char **passw
  */
 OAUTH2_API int oauth2_request_get_custom_data(oauth2_request_h handle, const char *custom_key, char **custom_value);
 
-/* End of oauth2 APIs */
+/* End of OAuth 2.0 APIs */
 /**
  * @}
  */

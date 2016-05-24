@@ -176,8 +176,8 @@ oauth2_request_set_response_type(oauth2_request_h handle,
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"NULL handle");
 
-	if (response_type <= OAUTH2_RESPONSE_TYPE_MIN
-			|| response_type >= OAUTH2_RESPONSE_TYPE_MAX) {
+	if (response_type < OAUTH2_RESPONSE_TYPE_CODE
+			|| response_type > OAUTH2_RESPONSE_TYPE_TOKEN) {
 		OAUTH2_LOG_E("Invalid response_type [%d]", response_type);
 		return OAUTH2_ERROR_INVALID_PARAMETER;
 	}
@@ -249,8 +249,8 @@ oauth2_request_set_client_authentication_type(oauth2_request_h handle,
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"NULL handle");
 
-	if (client_auth_type <= OAUTH2_CLIENT_AUTHENTICATION_TYPE_MIN
-		|| client_auth_type >= OAUTH2_CLIENT_AUTHENTICATION_TYPE_MAX) {
+	if (client_auth_type < OAUTH2_CLIENT_AUTHENTICATION_TYPE_BASIC
+		|| client_auth_type > OAUTH2_CLIENT_AUTHENTICATION_TYPE_REQUEST_BODY) {
 		OAUTH2_LOG_E("Invalid client_auth_type [%d]", client_auth_type);
 		return OAUTH2_ERROR_INVALID_PARAMETER;
 	}
@@ -321,8 +321,8 @@ oauth2_request_set_grant_type(oauth2_request_h handle,
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"NULL handle");
 
-	if (grant_type <= OAUTH2_GRANT_TYPE_MIN
-			|| grant_type >= OAUTH2_GRANT_TYPE_MAX) {
+	if (grant_type < OAUTH2_GRANT_TYPE_AUTH_CODE
+			|| grant_type > OAUTH2_GRANT_TYPE_REFRESH) {
 		OAUTH2_LOG_E("Invalid grant_type [%d]", grant_type);
 		return OAUTH2_ERROR_INVALID_PARAMETER;
 	}
@@ -531,6 +531,7 @@ oauth2_request_get_response_type(oauth2_request_h handle,
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"NULL handle");
 
+	int res;
 	oauth2_request_s *request_data_temp = (oauth2_request_s *)handle;
 
 	char *val = NULL;
@@ -539,7 +540,9 @@ oauth2_request_get_response_type(oauth2_request_h handle,
 	if (!val)
 		return OAUTH2_ERROR_VALUE_NOT_FOUND;
 
-	sscanf(val, "%d", response_type);
+	sscanf(val, "%d", &res);
+	*response_type = (oauth2_response_type_e) res;
+
 	return OAUTH2_ERROR_NONE;
 }
 
@@ -622,6 +625,7 @@ oauth2_request_get_grant_type(oauth2_request_h handle,
 	OAUTH2_RETURN_VAL(handle, {}, OAUTH2_ERROR_INVALID_PARAMETER,
 		"NULL handle");
 
+	int res;
 	oauth2_request_s *request_data_temp = (oauth2_request_s *)handle;
 
 	char *val = NULL;
@@ -630,7 +634,9 @@ oauth2_request_get_grant_type(oauth2_request_h handle,
 	if (!val)
 		return OAUTH2_ERROR_VALUE_NOT_FOUND;
 
-	sscanf(val, "%d", grant_type);
+	sscanf(val, "%d", &res);
+	*grant_type = (oauth2_grant_type_e) res;
+
 	return OAUTH2_ERROR_NONE;
 }
 

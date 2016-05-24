@@ -112,11 +112,13 @@ oauth2_util_get_params(const char *url_part, bundle **params)
 		memset(key, '\0', ((eq_ptr - tmp_start) + 1) * sizeof(char));
 		strncpy(key, tmp_start, (eq_ptr - tmp_start));
 
-		eq_ptr++;
+		if (eq_ptr != NULL)
+			eq_ptr++;
 
 		key_size = (tmp_end - eq_ptr) + 1;
 		char *val = (char *) malloc((key_size) * sizeof(char));
 		if (val == NULL) {
+			OAUTH2_LOG_E("Out of memory");
 			OAUTH2_FREE(key);
 			return OAUTH2_ERROR_OUT_OF_MEMORY;
 		}

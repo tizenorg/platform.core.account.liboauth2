@@ -19,15 +19,29 @@
 #define __OAUTH2_DOC_H__
 
 /**
- * @defgroup  CAPI_OAUTH2_MODULE oauth2
+ * @defgroup  CAPI_OAUTH2_MODULE OAuth 2.0
  * @ingroup   CAPI_ACCOUNT_FRAMEWORK
- * @brief     The oauth2 APIs provide easy way to gain access token between server and client.
+ * @brief     The OAuth 2.0 APIs provide easy way to gain access token between server and client.
  *
  * @section   CAPI_OAUTH2_HEADER Required Header
  *  \#include <oauth2.h>
  *
  * @section CAPI_OAUTH2_MODULE_OVERVIEW Overview
  * The OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the third-party application to obtain access on its own behalf.
+ *
+ * @if WEARABLE
+ * @section CAPI_OAUTH2_MODULE_FEATURE Related Features
+ * This API is related with the following features:
+ *  - http://tizen.org/feature/network.internet
+ *
+ * It is recommended to design feature related codes in your application for reliability.\n
+ *
+ * You can check if a device supports the related features for this API by using @ref CAPI_SYSTEM_SYSTEM_INFO_MODULE, thereby controlling the procedure of your application.\n
+ *
+ * To ensure your application is only running on the device with specific features, please define the features in your manifest file using the manifest editor in the SDK.\n
+ *
+ * More details on featuring your application can be found from <a href="../org.tizen.mobile.native.appprogramming/html/ide_sdk_tools/feature_element.htm"><b>Feature Element</b>.</a>
+ * @endif
  *
 */
 
