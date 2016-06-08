@@ -555,12 +555,12 @@ __parse_acc_token_response(const char *response_json,
 	OAUTH2_LOG_I("__parse_acc_token_response parse finished");
 
 	*response = response_temp;
-    response_temp = NULL;
+	response_temp = NULL;
 
 CATCH:
 	g_object_unref(parser);
-    if (response_temp != NULL)
-        oauth2_response_destroy((oauth2_response_h)response_temp);
+	if (response_temp != NULL)
+		oauth2_response_destroy((oauth2_response_h)response_temp);
 
 	OAUTH2_LOG_I("__parse_acc_token_response end");
 }
