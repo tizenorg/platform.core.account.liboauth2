@@ -115,7 +115,7 @@ typedef struct _oauth2_manager_s {
 	Evas_Object *login_win;
 	Evas_Object *content_box;
 	Evas_Object *ewk_view;
-	Evas_Object *loading_popup;
+	/*Evas_Object *loading_popup;*/
 	CURL *curl_handle;
 	JsonParser *parser_handle;
 	oauth2_response_s *response;

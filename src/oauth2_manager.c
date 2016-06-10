@@ -146,10 +146,10 @@ __hide_web_view(oauth2_manager_s *mgr_handle)
 		evas_object_hide(mgr_handle->login_win);
 	}
 
-	if (mgr_handle->loading_popup) {
+	/*if (mgr_handle->loading_popup) {
 		evas_object_hide(mgr_handle->loading_popup);
 		mgr_handle->loading_popup = NULL;
-	}
+	}*/
 }
 
 static void
@@ -1022,6 +1022,10 @@ _on_auth_grant_received(oauth2_manager_s *mgr_handle, const char *response_url)
 static void
 on_web_url_load_error(void *data, Evas_Object *obj, void *event_info)
 {
+	const char *uri = event_info;
+
+	OAUTH2_LOG_I("on_web_url_load_error=[%s]", uri);
+
 	/* wearable webkit does not have ewk_error defined */
 #ifndef WITHOUT_EWK_ERROR
 	oauth2_manager_s *mgr_handle = data;
@@ -1039,12 +1043,16 @@ on_web_url_load_error(void *data, Evas_Object *obj, void *event_info)
 static void
 on_web_url_load_finished(void *data, Evas_Object *obj, void *event_info)
 {
-	oauth2_manager_s *mgr_handle = data;
+	const char *uri = event_info;
+
+	OAUTH2_LOG_I("on_web_url_load_finished=[%s]", uri);
+
+	/*oauth2_manager_s *mgr_handle = data;
 
 	if (mgr_handle->loading_popup) {
 		evas_object_hide(mgr_handle->loading_popup);
 		mgr_handle->loading_popup = NULL;
-	}
+	}*/
 }
 
 static void
@@ -1052,19 +1060,21 @@ on_web_url_change(void *data, Evas_Object *obj, void *event_info)
 {
 	const char *uri = event_info;
 
+	OAUTH2_LOG_I("on_web_url_change=[%s]", uri);
+
 	oauth2_manager_s *mgr_handle = data;
 	char *redirect_uri = NULL;
 	bundle_get_str(mgr_handle->request->request_data,
 		OAUTH2_PARAMETER_KEY_REDIRECT_URI, &redirect_uri);
 
 	if (!g_str_has_prefix(uri, redirect_uri)) {
-		if (mgr_handle->loading_popup == NULL) {
+		/*if (mgr_handle->loading_popup == NULL) {
 			mgr_handle->loading_popup = elm_popup_add(mgr_handle->login_win);
 			elm_popup_content_text_wrap_type_set(mgr_handle->loading_popup, ELM_WRAP_MIXED);
 			elm_object_text_set(mgr_handle->loading_popup, OAUTH2_LOADING_POP_UP_TEXT);
 			elm_popup_orient_set(mgr_handle->loading_popup, ELM_POPUP_ORIENT_BOTTOM);
 			evas_object_show(mgr_handle->loading_popup);
-		}
+		}*/
 		return;
 	}
 
@@ -1090,10 +1100,10 @@ __start_auth_grant_request(oauth2_manager_s *mgr_handle)
 	eext_object_event_callback_add(mgr_handle->login_win,
 		EEXT_CALLBACK_BACK, __exit_back_cb, mgr_handle);
 
-	mgr_handle->loading_popup = elm_popup_add(mgr_handle->login_win);
+	/*mgr_handle->loading_popup = elm_popup_add(mgr_handle->login_win);
 	elm_popup_content_text_wrap_type_set(mgr_handle->loading_popup, ELM_WRAP_MIXED);
 	elm_object_text_set(mgr_handle->loading_popup, OAUTH2_LOADING_POP_UP_TEXT);
-	elm_popup_orient_set(mgr_handle->loading_popup, ELM_POPUP_ORIENT_BOTTOM);
+	elm_popup_orient_set(mgr_handle->loading_popup, ELM_POPUP_ORIENT_BOTTOM);*/
 
 	ewk_init();
 
@@ -1151,7 +1161,7 @@ __start_auth_grant_request(oauth2_manager_s *mgr_handle)
 
 	evas_object_show(mgr_handle->login_win);
 
-	evas_object_show(mgr_handle->loading_popup);
+	/*evas_object_show(mgr_handle->loading_popup);*/
 
 	return OAUTH2_ERROR_NONE;
 }
